@@ -1,6 +1,6 @@
 // src/pages/Checkout.tsx
 import { useState } from 'react';
-import { Box, Heading, Input, Button, VStack, Text } from '@chakra-ui/react';
+import { Box, Heading, Input, Button, VStack, Text, HStack } from '@chakra-ui/react';
 import { Field } from '../components/ui/field';
 
 export default function Checkout() {
@@ -8,37 +8,37 @@ export default function Checkout() {
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert('Payment processed! (Demo)');
+    alert('결제가 완료되었습니다! (데모)');
   };
 
   return (
     <Box maxW="600px" mx="auto">
-      <Heading mb={6}>Checkout</Heading>
+      <Heading mb={6}>결제하기</Heading>
       
       <Box p={6} borderWidth="1px" borderRadius="lg" mb={6}>
-        <Text fontSize="lg" fontWeight="bold" mb={2}>Order Summary</Text>
-        <Text>Product 1 - $29.99</Text>
-        <Text fontSize="xl" fontWeight="bold" mt={4}>Total: $29.99</Text>
+        <Text fontSize="lg" fontWeight="bold" mb={2}>주문 요약</Text>
+        <Text>상품 1 - ₩29,900</Text>
+        <Text fontSize="xl" fontWeight="bold" mt={4}>총액: ₩29,900</Text>
       </Box>
 
       <form onSubmit={handleSubmit}>
         <VStack gap={4} align="stretch">
-          <Field label="Card Number">
+          <Field label="카드 번호">
             <Input
               value={cardNumber}
-              onChange={(e) => setCardNumber(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCardNumber(e.target.value)}
               placeholder="1234 5678 9012 3456"
               required
             />
           </Field>
           
           <HStack gap={4}>
-            <Field label="Expiry Date" flex={1}>
+            <Field label="유효기간" flex={1}>
               <Input
                 value={expiry}
-                onChange={(e) => setExpiry(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setExpiry(e.target.value)}
                 placeholder="MM/YY"
                 required
               />
@@ -47,7 +47,7 @@ export default function Checkout() {
             <Field label="CVV" flex={1}>
               <Input
                 value={cvv}
-                onChange={(e) => setCvv(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCvv(e.target.value)}
                 placeholder="123"
                 required
               />
@@ -55,7 +55,7 @@ export default function Checkout() {
           </HStack>
           
           <Button type="submit" colorScheme="blue" size="lg" width="full">
-            Complete Payment
+            결제 완료
           </Button>
         </VStack>
       </form>

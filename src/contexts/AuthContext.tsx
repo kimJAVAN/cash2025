@@ -1,4 +1,4 @@
-// src/contexts/AuthContext.tsx
+// src/contexts/AuthContext.tsx (contexts 폴더에 있어야 함)
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface User {
@@ -19,12 +19,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, _password: string) => {
     // TODO: 실제 API 호출
     setUser({ id: '1', email, name: 'User' });
   };
 
-  const signup = async (email: string, password: string, name: string) => {
+  const signup = async (email: string, _password: string, name: string) => {
     // TODO: 실제 API 호출
     setUser({ id: '1', email, name });
   };

@@ -1,11 +1,11 @@
 // src/App.tsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from './components/ui/provider';
-import { AuthProvider } from './components/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Signup from './pages/Singup';
+import Signup from './pages/Signup';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
@@ -14,7 +14,7 @@ function App() {
   return (
     <Provider>
       <AuthProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/cash2025">
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />

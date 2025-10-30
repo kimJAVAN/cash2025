@@ -1,7 +1,7 @@
 // src/components/Header.tsx
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Flex, Button, HStack } from '@chakra-ui/react';
-import { useAuth } from '../components/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import { ColorModeButton } from './ui/color-mode';
 
 export default function Header() {

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Heading, Input, Button, VStack, Text } from '@chakra-ui/react';
 import { Field } from '../components/ui/field';
-import { useAuth } from '../components/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Signup() {
   const [name, setName] = useState('');
