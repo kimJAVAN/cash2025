@@ -1,5 +1,16 @@
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  VStack,
+  HStack,
+  IconButton,
+} from "@chakra-ui/react";
+import { useColorMode, useColorModeValue } from "../../components/ui/color-mode";
+import { MdLightMode, MdDarkMode } from "react-icons/md";
 
 // ------  SDK 초기화 ------
 // TODO: clientKey는 개발자센터의 API 개별 연동 키 > 결제창 연동에 사용하려할 MID > 클라이언트 키로 바꾸세요.
@@ -16,8 +27,15 @@ const amount = {
 
 export function PaymentCheckoutPage() {
   const [payment, setPayment] = useState(null);
-
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const { colorMode, toggleColorMode } = useColorMode();
+  
+  const bgColor = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const buttonBg = useColorModeValue("blue.500", "blue.300");
+  const buttonHoverBg = useColorModeValue("blue.600", "blue.400");
+  const selectedBg = useColorModeValue("blue.50", "blue.900");
+  const selectedBorder = useColorModeValue("blue.500", "blue.300");
 
   function selectPaymentMethod(method) {
     setSelectedPaymentMethod(method);
@@ -70,6 +88,7 @@ export function PaymentCheckoutPage() {
             useAppCardOnly: false,
           },
         });
+        break;
       case "TRANSFER":
         await payment.requestPayment({
           method: "TRANSFER", // 계좌이체 결제
@@ -89,6 +108,7 @@ export function PaymentCheckoutPage() {
             useEscrow: false,
           },
         });
+        break;
       case "VIRTUAL_ACCOUNT":
         await payment.requestPayment({
           method: "VIRTUAL_ACCOUNT", // 가상계좌 결제
@@ -109,6 +129,7 @@ export function PaymentCheckoutPage() {
             validHours: 24,
           },
         });
+        break;
       case "MOBILE_PHONE":
         await payment.requestPayment({
           method: "MOBILE_PHONE", // 휴대폰 결제
@@ -122,6 +143,7 @@ export function PaymentCheckoutPage() {
           // 가상계좌 안내, 퀵계좌이체 휴대폰 번호 자동 완성에 사용되는 값입니다. 필요하다면 주석을 해제해 주세요.
           // customerMobilePhone: "01012341234",
         });
+        break;
       case "CULTURE_GIFT_CERTIFICATE":
         await payment.requestPayment({
           method: "CULTURE_GIFT_CERTIFICATE", // 문화상품권 결제
@@ -135,6 +157,7 @@ export function PaymentCheckoutPage() {
           // 가상계좌 안내, 퀵계좌이체 휴대폰 번호 자동 완성에 사용되는 값입니다. 필요하다면 주석을 해제해 주세요.
           // customerMobilePhone: "01012341234",
         });
+        break;
       case "FOREIGN_EASY_PAY":
         await payment.requestPayment({
           method: "FOREIGN_EASY_PAY", // 해외 간편결제
@@ -155,6 +178,7 @@ export function PaymentCheckoutPage() {
             country: "KR",
           },
         });
+        break;
     }
   }
 
@@ -169,44 +193,131 @@ export function PaymentCheckoutPage() {
   }
 
   return (
-    <div className="wrapper">
-      <div className="box_section">
-        <h1>일반 결제</h1>
-        <div id="payment-method" style={{ display: "flex" }}>
-          <button id="CARD" className={`button2 ${selectedPaymentMethod === "CARD" ? "active" : ""}`} onClick={() => selectPaymentMethod("CARD")}>
-            카드
-          </button>
-          <button id="TRANSFER" className={`button2 ${selectedPaymentMethod === "TRANSFER" ? "active" : ""}`} onClick={() => selectPaymentMethod("TRANSFER")}>
-            계좌이체
-          </button>
-          <button id="VIRTUAL_ACCOUNT" className={`button2 ${selectedPaymentMethod === "VIRTUAL_ACCOUNT" ? "active" : ""}`} onClick={() => selectPaymentMethod("VIRTUAL_ACCOUNT")}>
-            가상계좌
-          </button>
-          <button id="MOBILE_PHONE" className={`button2 ${selectedPaymentMethod === "MOBILE_PHONE" ? "active" : ""}`} onClick={() => selectPaymentMethod("MOBILE_PHONE")}>
-            휴대폰
-          </button>
-          <button
-            id="CULTURE_GIFT_CERTIFICATE"
-            className={`button2 ${selectedPaymentMethod === "CULTURE_GIFT_CERTIFICATE" ? "active" : ""}`}
-            onClick={() => selectPaymentMethod("CULTURE_GIFT_CERTIFICATE")}
+    <Container maxW="container.lg" py={8}>
+      <Box position="absolute" top={4} right={4}>
+        <IconButton
+          icon={colorMode === "light" ? <MdDarkMode /> : <MdLightMode />}
+          onClick={toggleColorMode}
+          aria-label="Toggle color mode"
+        />
+      </Box>
+
+      <VStack spacing={8} align="stretch">
+        {/* 일반 결제 섹션 */}
+        <Box
+          bg={bgColor}
+          p={8}
+          borderRadius="lg"
+          borderWidth="1px"
+          borderColor={borderColor}
+          boxShadow="md"
+        >
+          <Heading size="lg" mb={6}>
+            일반 결제
+          </Heading>
+          
+          <HStack spacing={3} mb={6} flexWrap="wrap">
+            <Button
+              size="md"
+              variant={selectedPaymentMethod === "CARD" ? "solid" : "outline"}
+              colorScheme="blue"
+              bg={selectedPaymentMethod === "CARD" ? selectedBg : "transparent"}
+              borderColor={selectedPaymentMethod === "CARD" ? selectedBorder : borderColor}
+              onClick={() => selectPaymentMethod("CARD")}
+            >
+              카드
+            </Button>
+            <Button
+              size="md"
+              variant={selectedPaymentMethod === "TRANSFER" ? "solid" : "outline"}
+              colorScheme="blue"
+              bg={selectedPaymentMethod === "TRANSFER" ? selectedBg : "transparent"}
+              borderColor={selectedPaymentMethod === "TRANSFER" ? selectedBorder : borderColor}
+              onClick={() => selectPaymentMethod("TRANSFER")}
+            >
+              계좌이체
+            </Button>
+            <Button
+              size="md"
+              variant={selectedPaymentMethod === "VIRTUAL_ACCOUNT" ? "solid" : "outline"}
+              colorScheme="blue"
+              bg={selectedPaymentMethod === "VIRTUAL_ACCOUNT" ? selectedBg : "transparent"}
+              borderColor={selectedPaymentMethod === "VIRTUAL_ACCOUNT" ? selectedBorder : borderColor}
+              onClick={() => selectPaymentMethod("VIRTUAL_ACCOUNT")}
+            >
+              가상계좌
+            </Button>
+            <Button
+              size="md"
+              variant={selectedPaymentMethod === "MOBILE_PHONE" ? "solid" : "outline"}
+              colorScheme="blue"
+              bg={selectedPaymentMethod === "MOBILE_PHONE" ? selectedBg : "transparent"}
+              borderColor={selectedPaymentMethod === "MOBILE_PHONE" ? selectedBorder : borderColor}
+              onClick={() => selectPaymentMethod("MOBILE_PHONE")}
+            >
+              휴대폰
+            </Button>
+            <Button
+              size="md"
+              variant={selectedPaymentMethod === "CULTURE_GIFT_CERTIFICATE" ? "solid" : "outline"}
+              colorScheme="blue"
+              bg={selectedPaymentMethod === "CULTURE_GIFT_CERTIFICATE" ? selectedBg : "transparent"}
+              borderColor={selectedPaymentMethod === "CULTURE_GIFT_CERTIFICATE" ? selectedBorder : borderColor}
+              onClick={() => selectPaymentMethod("CULTURE_GIFT_CERTIFICATE")}
+            >
+              문화상품권
+            </Button>
+            <Button
+              size="md"
+              variant={selectedPaymentMethod === "FOREIGN_EASY_PAY" ? "solid" : "outline"}
+              colorScheme="blue"
+              bg={selectedPaymentMethod === "FOREIGN_EASY_PAY" ? selectedBg : "transparent"}
+              borderColor={selectedPaymentMethod === "FOREIGN_EASY_PAY" ? selectedBorder : borderColor}
+              onClick={() => selectPaymentMethod("FOREIGN_EASY_PAY")}
+            >
+              해외간편결제
+            </Button>
+          </HStack>
+
+          <Button
+            colorScheme="blue"
+            size="lg"
+            width="full"
+            bg={buttonBg}
+            _hover={{ bg: buttonHoverBg }}
+            onClick={requestPayment}
+            isDisabled={!selectedPaymentMethod}
           >
-            문화상품권
-          </button>
-          <button id="FOREIGN_EASY_PAY" className={`button2 ${selectedPaymentMethod === "FOREIGN_EASY_PAY" ? "active" : ""}`} onClick={() => selectPaymentMethod("FOREIGN_EASY_PAY")}>
-            해외간편결제
-          </button>
-        </div>
-        <button className="button" onClick={() => requestPayment()}>
-          결제하기
-        </button>
-      </div>
-      <div className="box_section">
-        <h1>정기 결제</h1>
-        <button className="button" onClick={() => requestBillingAuth()}>
-          빌링키 발급하기
-        </button>
-      </div>
-    </div>
+            결제하기
+          </Button>
+        </Box>
+
+        {/* 정기 결제 섹션 */}
+        <Box
+          bg={bgColor}
+          p={8}
+          borderRadius="lg"
+          borderWidth="1px"
+          borderColor={borderColor}
+          boxShadow="md"
+        >
+          <Heading size="lg" mb={6}>
+            정기 결제
+          </Heading>
+          
+          <Button
+            colorScheme="blue"
+            size="lg"
+            width="full"
+            bg={buttonBg}
+            _hover={{ bg: buttonHoverBg }}
+            onClick={requestBillingAuth}
+          >
+            빌링키 발급하기
+          </Button>
+        </Box>
+      </VStack>
+    </Container>
   );
 }
 
