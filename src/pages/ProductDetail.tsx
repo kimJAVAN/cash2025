@@ -34,7 +34,7 @@ export default function ProductDetail() {
             size="lg"
             colorScheme="blue"
             width="full"
-            onClick={() => navigate('/checkout')}
+            onClick={() => navigate('/payment/checkout')}
           >
             Buy Now
           </Button>

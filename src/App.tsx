@@ -30,6 +30,7 @@ function App() {
               <Route path="signup" element={<Signup />} />
               <Route path="products" element={<ProductList />} />
               <Route path="products/:id" element={<ProductDetail />} />
+              {/* 원래 결제 페이지 -> 토스로 대체 */}
               <Route path="checkout" element={<Checkout />} />
               
               {/* Widget 라우트 */}
